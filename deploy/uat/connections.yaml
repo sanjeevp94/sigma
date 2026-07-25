@@ -1,0 +1,8 @@
+connections:
+  - name: redshift-uat
+    type: redshift
+    properties:
+      host: uat-cluster-rg.cxxxxxxxxxx.eu-west-1.redshift.amazonaws.com
+      port: 5439
+      database: analytics_uat
+      user: sigma_svc_uat

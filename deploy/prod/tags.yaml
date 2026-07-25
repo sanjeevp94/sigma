@@ -1,0 +1,7 @@
+tags:
+  - name: PROD
+    description: "Points to the latest commit on the release branch."
+    targets:
+      - artifact_type: workbook
+        artifact_name: "Executive Summary"
+        version: latest

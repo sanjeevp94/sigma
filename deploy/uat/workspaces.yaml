@@ -1,0 +1,6 @@
+workspaces:
+  - name: UAT Sandbox
+    description: UAT testing workspace
+    permissions:
+      - team: Data Engineering UAT
+        role: editor

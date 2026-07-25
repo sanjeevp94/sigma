@@ -1,0 +1,7 @@
+tags:
+  - name: UAT
+    description: "Points to the latest commit on the main branch."
+    targets:
+      - artifact_type: workbook
+        artifact_name: "Executive Summary"
+        version: latest

@@ -1,0 +1,8 @@
+connections:
+  - name: redshift-dev
+    type: redshift
+    properties:
+      host: dev-cluster-rg.cxxxxxxxxxx.eu-west-1.redshift.amazonaws.com
+      port: 5439
+      database: analytics_dev
+      user: sigma_svc_dev

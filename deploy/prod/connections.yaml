@@ -1,0 +1,8 @@
+connections:
+  - name: redshift-prod
+    type: redshift
+    properties:
+      host: prod-cluster-rg.cxxxxxxxxxx.eu-west-1.redshift.amazonaws.com
+      port: 5439
+      database: analytics_prod
+      user: sigma_svc_prod

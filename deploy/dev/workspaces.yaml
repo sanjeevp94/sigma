@@ -1,0 +1,6 @@
+workspaces:
+  - name: Dev Sandbox
+    description: Development workspace
+    permissions:
+      - team: Data Engineering Dev
+        role: editor

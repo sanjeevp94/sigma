@@ -1,0 +1,8 @@
+workspaces:
+  - name: Core Reporting
+    description: Production analytics
+    permissions:
+      - team: Data Engineering
+        role: editor
+      - team: Data Science
+        role: viewer
