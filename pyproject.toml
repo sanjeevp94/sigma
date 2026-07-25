@@ -5,7 +5,8 @@ description = "Sigma BI-as-Code ecosystem via GitOps"
 requires-python = ">=3.11"
 dependencies = [
     "requests>=2.31.0",
-    "PyYAML>=6.0.1"
+    "PyYAML>=6.0.1",
+    "jsonschema>=4.21.1",
 ]
 
 [tool.uv]

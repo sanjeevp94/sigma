@@ -6,6 +6,7 @@ pipeline {
         SIGMA_CLIENT_SECRET = credentials('sigma-client-secret')
         // Map branches to DEPLOY_ENV
         DEPLOY_ENV = "${env.BRANCH_NAME == 'main' ? 'uat' : (env.BRANCH_NAME == 'release' ? 'prod' : 'dev')}"
+        GIT_COMMIT = "${env.GIT_COMMIT ?: 'latest'}"
     }
 
     stages {
@@ -18,11 +19,30 @@ pipeline {
             }
         }
 
-        stage('Code Quality & Security') {
+        stage('Code Quality, Security & Validation') {
             steps {
                 sh 'make lint'
                 sh 'make security'
+                sh 'make validate'
             }
+        }
+
+        stage('Preview PR Workspace') {
+            when {
+                changeRequest()
+            }
+            steps {
+                script {
+                    def pr_id = env.CHANGE_ID
+                    sh "uv run python -m src.manage_pr_workspace --pr-id ${pr_id} --action create"
+                    // Typically, you'd trigger your artifact sync logic here,
+                    // targeting the newly created workspace.
+                }
+            }
+            // Note: Teardown logic has been removed from the build post-actions.
+            // In a production environment, you would configure a Bitbucket Webhook
+            // to trigger a separate Jenkins job that executes the teardown action
+            // when the PR state changes to MERGED or DECLINED.
         }
 
         stage('Deploy Connections & RBAC') {
@@ -47,9 +67,9 @@ pipeline {
         stage('Deploy Artifacts & Update UAT Tag') {
             when { branch 'main' }
             steps {
-                // Pushes new JSON and increments version
+                // Pushes new JSON and increments version, passing the deterministic tracking info
                 sh 'uv run python -m src.sync_artifacts'
-                // Reconciles the UAT tag to point to latest version
+                // Reconciles the UAT tag to point to latest/committed version
                 sh 'uv run python -m src.sync_tags'
             }
         }

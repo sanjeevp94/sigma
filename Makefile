@@ -1,4 +1,4 @@
-.PHONY: setup lint security clean pre-commit
+.PHONY: setup lint validate security clean pre-commit
 
 setup:
 	@echo "Setting up Python environment via uv..."
@@ -12,6 +12,10 @@ pre-commit:
 lint:
 	@echo "Running ruff linter..."
 	uv run ruff check src/
+
+validate:
+	@echo "Validating JSON schemas..."
+	uv run python -m src.validate_schemas
 
 security:
 	@echo "Running bandit security checks..."

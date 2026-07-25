@@ -1,4 +1,5 @@
 import logging
+import os
 
 # import requests
 import yaml
@@ -14,7 +15,10 @@ def sync_tags():
     Idempotent function to update Sigma version tags based on the active environment (UAT or PROD).
     Reads tag mapping state from deploy/{env}/tags.yaml.
     """
-    # headers = get_sigma_headers()
+    # session = get_sigma_client()
+
+    # We retrieve the GIT_COMMIT to use deterministic versioning where applicable.
+    git_commit = os.environ.get("GIT_COMMIT", "latest")
 
     tags_path = get_config_path("tags.yaml")
     with open(tags_path, "r") as file:
@@ -26,25 +30,30 @@ def sync_tags():
         logger.info(f"Reconciling targets for Tag: '{tag_name}'")
 
         for target in tag_def.get("targets", []):
-            artifact_type = target["artifact_type"]
+            target["artifact_type"]
             artifact_name = target["artifact_name"]
-            version = target["version"]
 
-            logger.info(f"Looking up ID for {artifact_type} '{artifact_name}' to apply tag.")
-            # Mock looking up the artifact ID and its latest version number
+            # Use deterministic GIT_COMMIT if the config explicitly specifies it
+            version_directive = target.get("version", "latest")
+            version = git_commit if version_directive == "GIT_COMMIT" else version_directive
+
+            logger.info(f"Looking up ID for {artifact_name} with directive: {version}")
+
+            # In reality, if version is a git commit hash, we would query the Sigma API for the workbook history
+            # and find the version ID that corresponds to the description matching the hash.
+            # GET /workbooks/{id}/versions
             # artifact_id = "mock-id-123"
-            latest_version = 42  # example version retrieved from API
 
-            target_version = latest_version if version == "latest" else int(version)
+            # We mock the resolved version.
+            target_version = 42 if version in ["latest", git_commit] else int(version)
 
             # Idempotency: Get current tag state
-            # response = requests.get(f"{SIGMA_API_URL}/tags/{tag_name}", headers=headers)
+            # response = session.get(f"{SIGMA_API_URL}/tags/{tag_name}")
             current_tagged_version = 41  # mock current tagged version
 
             if current_tagged_version != target_version:
-                logger.info(f"Updating {tag_name} tag for {artifact_name} to version {target_version}")
-                # POST /tags/{tag_name}/apply
-                # payload = {"artifactId": artifact_id, "version": target_version}
+                logger.info(f"Updating {tag_name} tag to version {target_version} (directive: {version})")
+                # session.post(f"/tags/{tag_name}/apply", json={"artifactId": artifact_id, "version": target_version})
             else:
                 logger.info(f"Tag {tag_name} is already pointing to version {target_version}. No action needed.")
 
