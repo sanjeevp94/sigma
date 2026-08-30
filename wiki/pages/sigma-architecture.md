@@ -21,7 +21,7 @@ We use `uv` for ultra-fast python environments.
 
 1. Ensure you have `uv` installed.
 2. Run `make setup` to create the `.venv` and install dependencies.
-3. Run `make pre-commit` to set up your pre-commit git hooks.
+3. Run `make prek` to set up your prek git hooks.
 
 Environment variables required for local testing:
 - `SIGMA_CLIENT_ID`

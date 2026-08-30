@@ -5,9 +5,9 @@ setup:
 	uv sync
 	uv pip install pre-commit ruff bandit
 
-pre-commit:
-	@echo "Installing pre-commit hooks..."
-	uv run pre-commit install
+prek:
+	@echo "Installing prek hooks..."
+	uv run prek install
 
 lint:
 	@echo "Running ruff linter..."

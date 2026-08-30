@@ -6,6 +6,7 @@ page files, not here.
 
 ## concept
 - [Sigma BI-as-Code Architecture](./pages/sigma-architecture.md)
+- [API Idempotency & Workflow Contracts](./pages/api-idempotency.md)
 
 ## decision
 - [SDD Implementation Suggestions](./pages/sdd-implementation-suggestions.md)
