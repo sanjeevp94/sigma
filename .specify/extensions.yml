@@ -1,5 +1,6 @@
 installed:
 - architecture-guard
+- retrospective
 - wiki
 settings:
   auto_execute_hooks: true
@@ -38,6 +39,15 @@ hooks:
     priority: 10
     prompt: Would you like to run a post-implementation architecture review?
     description: ''
+    condition: null
+  - extension: retrospective
+    command: speckit.retrospective.analyze
+    enabled: true
+    optional: true
+    priority: 10
+    prompt: Run retrospective analysis now? (spec changes require explicit confirmation)
+    description: Offer a retrospective after implementation without modifying spec
+      unless approved.
     condition: null
   after_tasks:
   - extension: architecture-guard

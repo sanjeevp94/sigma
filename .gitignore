@@ -3,5 +3,7 @@ __pycache__/
 *$py.class
 .venv/
 .env
-.ruff_cache/.specify/extensions/architecture-guard/
+.ruff_cache/
+.specify/extensions/retrospective/
 .specify/extensions/architecture-guard/
+.specify/extensions/retrospective/
