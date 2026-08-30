@@ -3,4 +3,5 @@ __pycache__/
 *$py.class
 .venv/
 .env
-.ruff_cache/
+.ruff_cache/.specify/extensions/architecture-guard/
+.specify/extensions/architecture-guard/

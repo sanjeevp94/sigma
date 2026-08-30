@@ -1,4 +1,5 @@
 installed:
+- architecture-guard
 - wiki
 settings:
   auto_execute_hooks: true
@@ -12,6 +13,15 @@ hooks:
     prompt: Ingest this feature's research and plan decisions into the project wiki?
     description: Compound the feature's verified research into the wiki after planning
     condition: null
+  - extension: architecture-guard
+    command: speckit.architecture-guard.ag-violation-detection
+    enabled: true
+    optional: true
+    priority: 10
+    prompt: Would you like to scan the technical plan for architectural drift and
+      Constitution violations?
+    description: ''
+    condition: null
   after_implement:
   - extension: wiki
     command: speckit.wiki.ingest
@@ -20,4 +30,21 @@ hooks:
     priority: 10
     prompt: Record what this implementation taught into the project wiki?
     description: Capture implementation learnings into the wiki after implementation
+    condition: null
+  - extension: architecture-guard
+    command: speckit.architecture-guard.ag-review-implementation
+    enabled: true
+    optional: true
+    priority: 10
+    prompt: Would you like to run a post-implementation architecture review?
+    description: ''
+    condition: null
+  after_tasks:
+  - extension: architecture-guard
+    command: speckit.architecture-guard.ag-refactor-generator
+    enabled: true
+    optional: true
+    priority: 10
+    prompt: Would you like to generate architectural refactor tasks before implementation?
+    description: ''
     condition: null
