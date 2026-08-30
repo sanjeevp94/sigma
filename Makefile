@@ -3,11 +3,11 @@
 setup:
 	@echo "Setting up Python environment via uv..."
 	uv sync
-	uv pip install pre-commit ruff bandit
+	uv pip install prek ruff bandit
 
-pre-commit:
-	@echo "Installing pre-commit hooks..."
-	uv run pre-commit install
+prek:
+	@echo "Installing prek hooks..."
+	uv run prek install
 
 lint:
 	@echo "Running ruff linter..."
