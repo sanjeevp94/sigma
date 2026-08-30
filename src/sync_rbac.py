@@ -74,6 +74,15 @@ def sync_teams_and_workspaces():
                 post_resp = session.post(f"{SIGMA_API_URL}/teams", json=payload)
                 post_resp.raise_for_status()
                 logger.info(f"Successfully created team '{team_name}'")
+
+                team_id = post_resp.json().get("teamId")
+                desired_members = set(team.get("members", []))
+                for member_id in desired_members:
+                    session.post(f"{SIGMA_API_URL}/teams/{team_id}/members", json={"memberId": member_id})
+
+                if desired_members:
+                    logger.info(f"Added {len(desired_members)} members to new team '{team_name}'.")
+
             except RequestException as e:
                 logger.error(f"Failed to create team {team_name}: {e}")
 
@@ -127,6 +136,18 @@ def sync_teams_and_workspaces():
                 post_resp = session.post(f"{SIGMA_API_URL}/workspaces", json=payload)
                 post_resp.raise_for_status()
                 logger.info(f"Successfully created workspace '{ws_name}'")
+
+                ws_id = post_resp.json().get("workspaceId")
+                desired_grants = {g["granteeId"]: g["permission"] for g in ws.get("permissions", [])}
+                for grantee_id, permission in desired_grants.items():
+                    session.post(
+                        f"{SIGMA_API_URL}/workspaces/{ws_id}/grants",
+                        json={"granteeId": grantee_id, "permission": permission},
+                    )
+
+                if desired_grants:
+                    logger.info(f"Added {len(desired_grants)} grants to new workspace '{ws_name}'.")
+
             except RequestException as e:
                 logger.error(f"Failed to create workspace {ws_name}: {e}")
 
